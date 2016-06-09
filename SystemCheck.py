@@ -10,6 +10,9 @@ tsdbIp="52.8.104.253"
 tsdbPort=4343
 interval=1
 hostname = os.uname()[1]
+import urllib2
+response = urllib2.urlopen("http://169.254.169.254/latest/meta-data/ami-id")
+instanceid = response.read()
 '''
 root@poweredge-1 vm]# vmstat -w 2 2
 procs -----------------------memory---------------------- ---swap-- -----io---- -system-- --------cpu--------
@@ -83,8 +86,8 @@ def main():
         vmstat_dict = vmstat_parse(vmstat)
         #print "\nCPU (metrics in %)"
         for k,v in vmstat_dict.iteritems():
-                metrics.send(k,v,host=hostname)
-                print k,v,"host=",hostname
+                metrics.send(k,v,host=hostname,instanceid=instanceid)
+                print k,v,"host="+hostname,"instanceid"+instanceid
         #memory
         meminfo = subprocess.check_output("cat /proc/meminfo",shell=True).split('\n');
                                                                                           
@@ -99,27 +102,27 @@ def main():
         mem_dict = {'system.mem.free':memfree,'system.mem.total':memtotal,'system.mem.used':memused,'system.mem.util':memutil,'system.mem.swap.total':swaptotal,'system.mem.swap.free':swapfree}
         #print "\nMemory (metrics in  MB) \n"
         for k,v in mem_dict.iteritems():
-                metrics.send(k,v,host=hostname)
-                print k,v,"host=",hostname
+                metrics.send(k,v,host=hostname,instanceid=instanceid)
+                print k,v,"host="+hostname,"instanceid"+instanceid
         #disk
         df = subprocess.check_output("df -m",shell=True).split('\n');
         df_dict = df_parse(df)
         #print df_dict
         #print "\n Disk \n"
         for k,v in df_dict.iteritems():
-                metrics.send("system.disk.size",v['Size'],host=hostname,device=k,mounton=v['Mountedon'])
-		metrics.send("system.disk.used",v['Used'],host=hostname,device=k,mounton=v['Mountedon'])
-		metrics.send("system.disk.avail",v['Available'],host=hostname,device=k,mounton=v['Mountedon'])
-		metrics.send("system.disk.util",v['Use'],host=hostname,device=k,mounton=v['Mountedon'])
+                metrics.send("system.disk.size",v['Size'],host=hostname,device=k,mounton=v['Mountedon'],instanceid=instanceid)
+		metrics.send("system.disk.used",v['Used'],host=hostname,device=k,mounton=v['Mountedon'],instanceid=instanceid)
+		metrics.send("system.disk.avail",v['Available'],host=hostname,device=k,mounton=v['Mountedon'],instanceid=instanceid)
+		metrics.send("system.disk.util",v['Use'],host=hostname,device=k,mounton=v['Mountedon'],instanceid=instanceid)
 
-                print "system.disk.size",v['Size'],"host=",hostname,"device=",k,"mounton=",v['Mountedon']
-		print "system.disk.used",v['Used'],"host=",hostname,"device=",k,"mounton=",v['Mountedon']
-		print "system.disk.avail",v['Available'],"host=",hostname,"device=",k,"mounton=",v['Mountedon']
-		print "system.disk.util",v['Use'],"host=",hostname,"device=",k,"mounton=",v['Mountedon']
+                print "system.disk.size",v['Size'],"host="+hostname,"device="+k,"mounton="+v['Mountedon'],"instanceid"+instanceid
+		print "system.disk.used",v['Used'],"host="+hostname,"device="+k,"mounton="+v['Mountedon'],"instanceid"+instanceid
+		print "system.disk.avail",v['Available'],"host="+hostname,"device="+k,"mounton="+v['Mountedon'],"instanceid"+instanceid
+		print "system.disk.util",v['Use'],"host="+hostname,"device="+k,"mounton="+v['Mountedon'],"instanceid"+instanceid
 
         cores = int(subprocess.check_output("nproc --all",shell=True))
-        metrics.send("system.cpu.cores",cores,host=hostname)
-        print "system.cpu.cores",cores,"host=",hostname
+        metrics.send("system.cpu.cores",cores,host=hostname,instanceid=instanceid)
+        print "system.cpu.cores",cores,"host="+hostname,"instanceid"+instanceid
 
         metrics.wait()
         #print "==cpu %(except cpu.numprocesswaiting int), disk MB(except disk.utill %) ,mem MB ,disk.blocks.read/write(blocks/s usually 1KB=1 block)====="

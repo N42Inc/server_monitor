@@ -6,19 +6,19 @@ SYSTEM_CHECK="SystemCheck.py"
 NETWORK_CHECK="NetworkCheck.py"
 
 echo "--- Download monitoragent init script ---"
-wget -q -O "$SERVICE_FILE" 'https://raw.githubusercontent.com/basivireddy/server_monitor/master/monitoragent.sh'
+wget -q -O "$SERVICE_FILE" 'https://raw.githubusercontent.com/N42Inc/server_monitor/master/monitoragent.sh'
 chmod +x "$SERVICE_FILE"
 echo ""
 
 echo "--- Download agent ---"
-wget -q -O "$DAEMON_FILE" 'https://raw.githubusercontent.com/basivireddy/server_monitor/master/Agent.py'
+wget -q -O "$DAEMON_FILE" 'https://raw.githubusercontent.com/N42Inc/server_monitor/master/Agent.py'
 chmod +x "$DAEMON_FILE"
 echo ""
 
 echo "--- Download checks ---"
-wget -q -O "$SYSTEM_CHECK" 'https://raw.githubusercontent.com/basivireddy/server_monitor/master/SystemCheck.py'
+wget -q -O "$SYSTEM_CHECK" 'https://raw.githubusercontent.com/N42Inc/server_monitor/master/SystemCheck.py'
 chmod +x "$SYSTEM_CHECK"
-wget -q -O "$NETWORK_CHECK" 'https://raw.githubusercontent.com/basivireddy/server_monitor/master/NetworkCheck.py'
+wget -q -O "$NETWORK_CHECK" 'https://raw.githubusercontent.com/N42Inc/server_monitor/master/NetworkCheck.py'
 chmod +x "$NETWORK_CHECK"
 echo ""
 
