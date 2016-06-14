@@ -13,7 +13,7 @@
 SCRIPT="stdbuf -oL nohup python /opt/agents/monitor/Agent.py"
 #RUNAS=<USERNAME>
 
-NAME="n42agent"
+NAME="monitoragent"
 PIDFILE="/var/run/$NAME.pid"
 LOGFILE="/var/log/$NAME.log"
 
