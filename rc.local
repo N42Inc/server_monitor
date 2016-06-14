@@ -11,5 +11,6 @@
 #
 # By default this script does nothing.
 /etc/init.d/packetbeat start
+/etc/init.d/monitoragent start
 
 exit 0
